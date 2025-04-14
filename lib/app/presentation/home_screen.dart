@@ -41,6 +41,7 @@ class _HomeScreenState extends State<HomeScreen> {
     );
   }
 
+  // Vendor section UI
   Widget _buildVendorSection() {
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
@@ -64,12 +65,35 @@ class _HomeScreenState extends State<HomeScreen> {
                   itemCount: state.vendors.length,
                   itemBuilder: (context, index) {
                     final VendorModel vendor = state.vendors[index];
-                    return ListTile(
-                        title: Text(vendor.name),
+                    return GestureDetector(
+                      onTap: () {
+                        // Add interaction here if needed, e.g., navigate to vendor details
+                      },
+                      child: Card(
+                        margin: const EdgeInsets.symmetric(horizontal: 8.0),
+                        child: Column(
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          children: [
+                            // Add an image or other details about the vendor if needed
+                            const Icon(Icons.store),
+                            Padding(
+                              padding: const EdgeInsets.all(8.0),
+                              child: Text(
+                                vendor.name,
+                                style: const TextStyle(
+                                  fontWeight: FontWeight.bold,
+                                  fontSize: 16,
+                                ),
+                              ),
+                            ),
+                          ],
+                        ),
+                      ),
                     );
                   },
                 );
-              } else{return const Center(child: Text('Initial Vendor State'));
+              } else {
+                return const Center(child: Text('No Vendors Available'));
               }
             },
           ),
@@ -78,6 +102,7 @@ class _HomeScreenState extends State<HomeScreen> {
     );
   }
 
+  // Product section UI
   Widget _buildProductSection() {
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
@@ -91,18 +116,31 @@ class _HomeScreenState extends State<HomeScreen> {
             } else if (state is ProductError) {
               return Center(child: Text(state.message));
             } else if (state is ProductLoaded) {
-              return ListView.builder(
-                shrinkWrap: true,
-                physics: const NeverScrollableScrollPhysics(),
-                itemCount: state.products.length,
-                itemBuilder: (context, index) {
-                  final ProductModel product = state.products[index];
-                  return Card(child: ListTile(
-                      title: Text(product.name),
-                  ));
-                },
+              return Container(
+                height: 300, // Fixed height for the product list
+                child: ListView.builder(
+                  shrinkWrap: true,
+                  physics: const NeverScrollableScrollPhysics(),
+                  itemCount: state.products.length,
+                  itemBuilder: (context, index) {
+                    final ProductModel product = state.products[index];
+                    return GestureDetector(
+                      onTap: () {
+                        // Add interaction here if needed, e.g., navigate to product details
+                      },
+                      child: Card(
+                        margin: const EdgeInsets.symmetric(vertical: 8.0),
+                        child: ListTile(
+                          title: Text(product.name),
+                          subtitle: Text("\$${product.price.toString()}"),
+                        ),
+                      ),
+                    );
+                  },
+                ),
               );
-            } else {return const Center(child: Text('Initial Product State'));
+            } else {
+              return const Center(child: Text('No Products Available'));
             }
           },
         ),
